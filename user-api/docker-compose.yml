@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+    db_user:
+        image: postgres:14.3-alpine
+        restart: always
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=db_user
+        ports:
+            - '5433:5432'
+        networks:
+            - myNet
+        volumes:
+            - db:/var/lib/postgresql_user/data
+    redis_order:
+        image: sickp/alpine-redis:3.2.2
+        ports:
+            - "6381:6379"
+        networks:
+            - myNet
+
+#    user_api:
+#        image: user-api:latest
+#        ports:
+#            - "8081:8081"
+#        networks:
+#            - myNet
+
+networks:
+    myNet:
+        driver: bridge // driver de rede padrão
+volumes:
+    db:
+        driver: local
